@@ -1,52 +1,26 @@
-from collections import namedtuple
-
 import inspect
 import warnings
 from functools import wraps
-from packaging import version
 
-__version__ = "0.22.0-dev"
+from refactor.core import *
+from refactor.presets import DEFAULT
 
-Stage = namedtuple('Stage', ['name', 'in_version'])
-
-
-def _sphinx_generator(**kwargs):
-    return ".. deprecated :: {deprecated_in} {details}".format(**kwargs)
-
-
-def _default_generator(**kwargs):
-    return "{} since {}. {details}".format(kwargs['current_stage'].name.title(),
-                                           kwargs['current_stage'].in_version,
-                                           details=kwargs['details'])
-
-
-def _default_preview_generator(**kwargs):
-    if kwargs['next_stage']:
-        return "Will be {} in {}.".format(kwargs['next_stage'].name.lower(),
-                                          kwargs['next_stage'].in_version)
-    else:
-        return None
+__version__ = "0.1.0-dev"
 
 
 class Deprecator:
 
-    def __init__(self, current_version, stages=None, docstring_generator=None, warning_generator=None,
-                 preview_generator=None, parameter_generator=":param {old}: Replaced by {new}"):
-        self.stages = stages or ['DEPRECATED', 'UNSUPPORTED', 'REMOVED']
+    def __init__(self, current_version, stages=None, skip_validation=False, preset=None):
         self.current_version = version.parse(current_version)
-        self.docstring_generator = docstring_generator or _default_generator
-        self.warning_generator = warning_generator or _default_generator
-        self.preview_generator = preview_generator or _default_preview_generator
-        self.parameter_generator = parameter_generator
+        self.skip_validation = skip_validation
+        self.stages = stages or ['DEPRECATED', 'UNSUPPORTED', 'REMOVED']
+        self.generator = preset or DEFAULT
 
     def _generate_deprecation(self, *version_identifiers):
         stages = list(map(lambda x: Stage(*x), zip(self.stages, map(version.parse, version_identifiers))))
 
-        for current_stage, next_stage in zip(stages, stages[1:]):
-            if current_stage.in_version >= next_stage.in_version:
-                raise TypeError("Don't schedule {} in {} after {} in {}."
-                                .format(current_stage.name.lower(), current_stage.in_version,
-                                        next_stage.name.lower(), next_stage.in_version))
+        if not self.skip_validation:
+            validate_version_identifiers(stages)
 
         next_stage = None
         for current_stage in reversed(stages):
@@ -56,23 +30,23 @@ class Deprecator:
             next_stage = current_stage
         return None
 
-    def _generate_messages(self, f, **kwargs):
-        warning_message = " :: ".join([f.__name__, self.warning_generator(**kwargs)])
-        docstring_message = self.docstring_generator(**kwargs)
-        preview_next_stage = self.preview_generator(**kwargs)
+    def _generate_messages(self, f, **deprecation):
+        warning_message = " :: ".join([f.__name__, self.generator['warning'](**deprecation)])
+        docstring_message = self.generator['docstring'](**deprecation)
+        preview_next_stage = self.generator['preview'](**deprecation)
         if preview_next_stage:
             warning_message = ' '.join([warning_message, preview_next_stage])
             docstring_message = ' '.join([docstring_message, preview_next_stage])
         return docstring_message, warning_message
 
-    def deprecated_method(self, *version_identifiers, details=None):
+    def deprecated(self, *version_identifiers, details=None):
         """Decorator to mark a class, function, staticmethod, classmethod or instancemethod as deprecated
 
         * Inserts information to the docstring describing the current (and next) deprecation stage.
         * Generates a `DeprecationWarning` if the decorator gets called.
 
         :parameter version_identifiers:
-            Specify versions at which the decorated object is [DEPRECATED, UNSUPPORTED, REMOVED].
+            Specify versions at which the decorated object enters next stage.
         :parameter details:
             Additional information to integrate in docstring
         :exception TypeError:
@@ -101,14 +75,14 @@ class Deprecator:
 
         return decorator
 
-    def deprecated_argspec(self, *version_identifiers, parameter_map, details=""):
+    def refactored(self, *version_identifiers, parameter_map, details=""):
         """Decorator to mark keyword arguments as deprecated
 
         * Replaces old keywords with new ones.
         * Generates a `DeprecationWarning` with if a deprecated keyword argument was passed.
 
         :param version_identifiers:
-            Specify versions at which the decorated object is [DEPRECATED, UNSUPPORTED, REMOVED].
+            Specify versions at which the decorated object enters next stage.
         :param parameter_map:
             If keyword arguments got renamed, pass a dict with (old_keyword=new_keyword) items.
             Otherwise pass a function with old_keywords and their default values as parameter which
@@ -134,9 +108,9 @@ class Deprecator:
                 old_params = inspect.getfullargspec(parameter_map).args
                 new_params = ', '.join(parameter_map().keys())
 
-                deprecated_params = [self.parameter_generator.format(old=old, new=new_params) for old in old_params]
+                deprecated_params = [self.generator['parameter'](old, new_params) for old in old_params]
             elif isinstance(parameter_map, dict):
-                deprecated_params = [self.parameter_generator.format(old=k, new=v) for k, v in parameter_map.items()]
+                deprecated_params = [self.generator['parameter'](k, v) for k, v in parameter_map.items()]
             else:
                 raise TypeError("parameter_map needs to be a dict or a function")
 
@@ -178,11 +152,3 @@ class Deprecator:
             return wrapper
 
         return decorator
-
-    def deprecated(self, *version_identifiers, parameter_map=None, details=""):
-        """
-        Calls either :func:`deprecated_method` or :func:`deprecated_argspec` if parameter_map is specified
-        """
-        if not parameter_map:
-            return self.deprecated_method(*version_identifiers, details=details)
-        return self.deprecated_argspec(*version_identifiers, parameter_map=parameter_map, details=details)
