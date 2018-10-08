@@ -25,5 +25,5 @@ def generator_preset(docstring=None, warning=None, preview=None, parameter=None)
             'preview': preview or _default_preview_generator, 'parameter': parameter or _default_param_generator}
 
 
-DEFAULT = generator_preset(_default_generator, _default_generator, _default_preview_generator, _default_param_generator)
-SPHINX = generator_preset(_sphinx_generator, _default_generator, _default_preview_generator, _default_param_generator)
+DEFAULT = generator_preset()
+SPHINX = generator_preset(docstring=_sphinx_generator)

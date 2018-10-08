@@ -2,13 +2,13 @@ import inspect
 import warnings
 from functools import wraps
 
-from refactor.core import *
-from refactor.presets import DEFAULT
+from pyoneering.core import *
+from pyoneering.presets import DEFAULT
 
 __version__ = "0.1.0-dev"
 
 
-class Deprecator:
+class DeprecationDecorators:
 
     def __init__(self, current_version, stages=None, skip_validation=False, preset=None):
         self.current_version = version.parse(current_version)
@@ -60,7 +60,7 @@ class Deprecator:
 
             docstring_message, warning_message = self._generate_messages(f, details=details, **deprecation)
 
-            docstring = f.__doc__ or ""
+            docstring = f.__doc__.strip() or ""
             docstring = docstring.split('\n', 1)
             docstring.insert(1, docstring_message)
             docstring.insert(1, '\n')
@@ -91,9 +91,6 @@ class Deprecator:
             Additional information to integrate in docstring
         :exception TypeError:
             If stages not in ascending order.
-
-        .. hint :: Valid versions passed to current_version and stages have to follow :pep:`440`
-
         """
 
         deprecation = self._generate_deprecation(*version_identifiers)

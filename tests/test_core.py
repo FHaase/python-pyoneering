@@ -1,7 +1,7 @@
 import pytest
 from pytest import raises
 
-from refactor.core import *
+from pyoneering.core import *
 
 
 @pytest.mark.parametrize("stage_names, version_identifiers, expected_stages", [
