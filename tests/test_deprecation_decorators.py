@@ -11,7 +11,7 @@ from pyoneering.presets import generator_preset
 
 
 def load_decorator(parameter_map, **kwargs):
-    module = DeprecationDecorators('1.0', **kwargs)
+    module = DeprecationDecorators('1.0', stages=['DEPRECATED', 'UNSUPPORTED', 'REMOVED'], **kwargs)
     if parameter_map:
         return functools.partial(module.refactored, parameter_map=parameter_map)
     return module.deprecated
@@ -22,7 +22,7 @@ _default_parameter_map = [None, dict(), lambda **_: dict()]
 
 def get_generator(docstring=None, warning=None, preview=None):
     def f(value):
-        return lambda **_: value if value else ''
+        return lambda *_, **b: value if value else ''
 
     return generator_preset(docstring=f(docstring), warning=f(warning), preview=f(preview), parameter=f(''))
 
@@ -135,4 +135,4 @@ def test_docstring_appended_with_old_kwargs(parameter_map):
         """summary line"""
         pass
 
-    assert ":param old_kwarg: Replaced by new_kwarg." in func.__doc__
+    assert ":parameter: (old_kwarg) replaced with (new_kwarg)." in func.__doc__

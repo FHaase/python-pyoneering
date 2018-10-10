@@ -3,23 +3,33 @@ import warnings
 from functools import wraps
 
 from pyoneering.core import *
-from pyoneering.presets import DEFAULT
+from pyoneering.presets import SPHINX
 
 __version__ = "0.1.0-dev"
 
 
 class DeprecationDecorators:
+    """This class contains the decorators to annotate objects in a deprecation cycle."""
 
-    def __init__(self, current_version, stages=None, skip_validation=False, preset=None):
+    def __init__(self, current_version, stages=None, used_in_production=False, preset=None):
+        """
+        :param current_version:
+        :param stages:
+            Names for the deprecation cycle - default ['DEPRECATED', 'REMOVED']
+        :param used_in_production:
+            When used in production decorators get optimized for performance
+        :param preset:
+            See :func:`pyoneering.presets.generator_presets`
+        """
         self.current_version = version.parse(current_version)
-        self.skip_validation = skip_validation
-        self.stages = stages or ['DEPRECATED', 'UNSUPPORTED', 'REMOVED']
-        self.generator = preset or DEFAULT
+        self.used_in_production = used_in_production
+        self.stages = stages or ['DEPRECATED', 'REMOVED']
+        self.generator = preset or SPHINX
 
     def _generate_deprecation(self, *version_identifiers):
         stages = list(map(lambda x: Stage(*x), zip(self.stages, map(version.parse, version_identifiers))))
 
-        if not self.skip_validation:
+        if not self.used_in_production:
             validate_version_identifiers(stages)
 
         next_stage = None
@@ -39,7 +49,7 @@ class DeprecationDecorators:
             docstring_message = ' '.join([docstring_message, preview_next_stage])
         return docstring_message, warning_message
 
-    def deprecated(self, *version_identifiers, details=None):
+    def deprecated(self, *version_identifiers, details=''):
         """Decorator to mark a class, function, staticmethod, classmethod or instancemethod as deprecated
 
         * Inserts information to the docstring describing the current (and next) deprecation stage.
@@ -102,10 +112,9 @@ class DeprecationDecorators:
             docstring_message, warning_message = self._generate_messages(f, details=details, **deprecation)
 
             if inspect.isfunction(parameter_map):
-                old_params = inspect.getfullargspec(parameter_map).args
+                old_params = ', '.join(inspect.getfullargspec(parameter_map).args)
                 new_params = ', '.join(parameter_map().keys())
-
-                deprecated_params = [self.generator['parameter'](old, new_params) for old in old_params]
+                deprecated_params = [self.generator['parameter'](old_params, new_params)]
             elif isinstance(parameter_map, dict):
                 deprecated_params = [self.generator['parameter'](k, v) for k, v in parameter_map.items()]
             else:

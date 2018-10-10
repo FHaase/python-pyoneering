@@ -16,7 +16,6 @@ import os
 import sys
 
 import sphinx_glpi_theme
-from packaging import version
 
 from pyoneering import __version__ as release  # The full version, including alpha/beta/rc tags
 
@@ -27,7 +26,11 @@ sys.path.insert(0, os.path.abspath('../../'))
 project = 'pyoneering'
 copyright = '2018, Fabian Haase'
 author = 'Fabian Haase'
-version = version.parse(release).base_version  # The short X.Y version
+version, _, _ = release.partition('-')  # The short X.Y version
+
+rst_prolog = f"""
+.. |project| replace:: {project}  
+"""
 
 # -- General configuration ---------------------------------------------------
 
@@ -40,6 +43,7 @@ version = version.parse(release).base_version  # The short X.Y version
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
@@ -115,7 +119,7 @@ htmlhelp_basename = 'pyoneeringdoc'
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
-    # 'papersize': 'letterpaper',
+    # 'papersize': 'a4paper',
 
     # The font size ('10pt', '11pt' or '12pt').
     #

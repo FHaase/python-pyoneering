@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/deprecated.iml" filepath="$PROJECT_DIR$/.idea/deprecated.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/deprecations.iml" filepath="$PROJECT_DIR$/.idea/deprecations.iml" />
     </modules>
   </component>

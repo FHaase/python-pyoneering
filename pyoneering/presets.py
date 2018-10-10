@@ -1,11 +1,11 @@
 def _sphinx_generator(**kwargs):
-    return ".. deprecated :: {deprecated_in} {details}".format(**kwargs)
+    return ".. deprecated :: {deprecated_in}{details}".format(**kwargs)
 
 
 def _default_generator(**kwargs):
-    return "{} since {}. {details}".format(kwargs['current_stage'].name.title(),
-                                           kwargs['current_stage'].in_version,
-                                           details=kwargs['details'])
+    return "{} since {}.{details}".format(kwargs['current_stage'].name.title(),
+                                          kwargs['current_stage'].in_version,
+                                          details=kwargs['details'])
 
 
 def _default_preview_generator(**kwargs):
@@ -17,7 +17,7 @@ def _default_preview_generator(**kwargs):
 
 
 def _default_param_generator(*args):
-    return ":param {}: Replaced by {}.".format(*args)
+    return ":parameter: ({}) replaced with ({}).".format(*args)
 
 
 def generator_preset(docstring=None, warning=None, preview=None, parameter=None):

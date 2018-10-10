@@ -1,13 +1,29 @@
-Welcome to deprecations's documentation!
-========================================
-
-.. autoclass:: pyoneering.DeprecationDecorators
-    :members:
-    :show-inheritance:
+Welcome to |project|\s documentation!
+=====================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :maxdepth: 4
+    :caption: Getting started
+
+    usage/install
+    usage/quickstart
+    usage/examples
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Reference
+
+    modules
+
+
+
+
+
+
+What is |project|
+=================
+
+
 
 Indices and tables
 ==================
