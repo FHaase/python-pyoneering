@@ -1,7 +1,7 @@
 import functools
-import warnings
-
+import inspect
 import pytest
+import warnings
 from hypothesis import given
 from hypothesis.strategies import one_of, none, text
 from pytest import raises
@@ -136,3 +136,19 @@ def test_docstring_appended_with_old_kwargs(parameter_map):
         pass
 
     assert ":parameter: (old_kwarg) replaced with (new_kwarg)." in func.__doc__
+
+
+@pytest.mark.parametrize("parameter_map", [dict(old_kwarg='new_kwarg'),
+                                           lambda old_kwarg=None: dict(new_kwarg=old_kwarg),
+                                           _migrate_func])
+def test_unchanged_parameters_remain_in_signature(parameter_map):
+    decorator = load_decorator(parameter_map)
+
+    @decorator('0.1')
+    def func(arg, kwarg1=None, new_kwarg=None):
+        """summary line"""
+        pass
+
+    parameter_keys = inspect.signature(func).parameters.keys()
+    assert "kwarg1" in parameter_keys
+    assert "arg" in parameter_keys

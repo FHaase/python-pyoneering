@@ -1,6 +1,6 @@
 import warnings
 
-from tests.example import deprecated, refactored
+from tests.example.utils import deprecated, refactored
 
 
 @deprecated('0.6', '1.8')
