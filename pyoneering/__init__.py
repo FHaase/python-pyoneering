@@ -1,5 +1,11 @@
-__all__ = ['__version__', 'DeprecationDecorators']
+__all__ = ['__version__', 'DevUtils']
 
-from pyoneering.deprecation_decorators import DeprecationDecorators
+from pkg_resources import get_distribution, DistributionNotFound
 
-__version__ = '0.1-dev'
+from pyoneering.devutils import DevUtils
+
+try:
+    __version__ = get_distribution(__name__).version
+except DistributionNotFound:
+    # package is not installed
+    pass

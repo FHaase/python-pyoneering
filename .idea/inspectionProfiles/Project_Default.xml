@@ -4,7 +4,7 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="35">
+          <list size="36">
             <item index="0" class="java.lang.String" itemvalue="sphinx-autobuild" />
             <item index="1" class="java.lang.String" itemvalue="atomicwrites" />
             <item index="2" class="java.lang.String" itemvalue="more-itertools" />
@@ -40,6 +40,7 @@
             <item index="32" class="java.lang.String" itemvalue="hypothesis" />
             <item index="33" class="java.lang.String" itemvalue="argh" />
             <item index="34" class="java.lang.String" itemvalue="idna" />
+            <item index="35" class="java.lang.String" itemvalue="setuptools-scm" />
           </list>
         </value>
       </option>

@@ -1,31 +1,18 @@
-# -*- coding: utf-8 -*-
-#
-# Configuration file for the Sphinx documentation builder.
-#
-# This file does only contain a selection of the most common options. For a
-# full list see the documentation:
-# http://www.sphinx-doc.org/en/master/config
-
-# -- Path setup --------------------------------------------------------------
-
 import sys
 
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#
 import os
+from pkg_resources import get_distribution
 
-sys.path.insert(0, os.path.abspath('../'))
-
-from pyoneering import __version__ as release  # The full version, including alpha/beta/rc tags
+sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
 project = 'pyoneering'
 copyright = '2018, Fabian Haase'
 author = 'Fabian Haase'
-version, _, _ = release.partition('-')  # The short X.Y version
+
+release = get_distribution(project).version
+version = '.'.join(release.split('.')[:2])
 
 rst_prolog = f"""
 .. |project| replace:: {project}  

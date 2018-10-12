@@ -6,12 +6,12 @@ from hypothesis import given
 from hypothesis.strategies import one_of, none, text
 from pytest import raises
 
-from pyoneering import DeprecationDecorators
+from pyoneering import DevUtils
 from pyoneering.presets import generator_preset
 
 
 def load_decorator(parameter_map, **kwargs):
-    module = DeprecationDecorators('1.0', stages=['DEPRECATED', 'UNSUPPORTED', 'REMOVED'], **kwargs)
+    module = DevUtils('1.0', stages=['DEPRECATED', 'UNSUPPORTED', 'REMOVED'], **kwargs)
     if parameter_map:
         return functools.partial(module.refactored, parameter_map=parameter_map)
     return module.deprecated

@@ -8,7 +8,7 @@ from pyoneering.presets import SPHINX
 __version__ = "0.1.0-dev"
 
 
-class DeprecationDecorators:
+class DevUtils:
     """This class contains the decorators to annotate objects in a deprecation cycle."""
 
     def __init__(self, current_version, stages=None, used_in_production=False, preset=None):

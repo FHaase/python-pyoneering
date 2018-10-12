@@ -1,33 +1,7 @@
-Welcome to |project|\s documentation!
-=====================================
-
 .. toctree::
-    :maxdepth: 4
-    :caption: Getting started
+   :caption: Getting Started
+   :maxdepth: 4
 
-    usage/install
-    usage/quickstart
-    usage/examples
-
-.. toctree::
-    :maxdepth: 2
-    :caption: Reference
-
-    modules
-
-
-
-
-
-
-What is |project|
-=================
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   getting-started/installation
+   getting-started/configuration
+   getting-started/examples
