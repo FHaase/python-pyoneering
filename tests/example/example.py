@@ -1,3 +1,4 @@
+import sys
 import warnings
 
 from tests.example.utils import deprecated, refactored
@@ -38,19 +39,20 @@ def merged_parameter(kwarg1=5, new_kwarg1='error'):
     pass
 
 
-def catch_warning(runnable, **kwargs):
-    warnings.filterwarnings('once')
-    with warnings.catch_warnings(record=True) as w:
-        runnable(**kwargs)
-        warning = '.\nReplace'.join(str(w[-1].message).split('. Replace'))
-        return f"""
+if 'sphinx' in sys.modules:
+    def document_warning(runnable, **kwargs):
+        warnings.filterwarnings('once')
+        with warnings.catch_warnings(record=True) as w:
+            runnable(**kwargs)
+            warning = '.\nReplace'.join(str(w[-1].message).split('. Replace'))
+            runnable.__doc__ += ("\n"
+                                 "\n"
+                                 ">>> {}({})  # Generates warning:\n"
+                                 "{}").format(runnable.__name__,
+                                              ', '.join(['{}={}'.format(a, b) for a, b in kwargs.items()]), warning)
 
->>> {runnable.__name__}({', '.join(['{}={}'.format(a, b) for a, b in kwargs.items()])})  #Generates warning:
-{warning}"""
-
-
-DeprecatedClass.__doc__ += catch_warning(DeprecatedClass)
-deprecated_method.__doc__ += catch_warning(deprecated_method)
-renamed_parameter.__doc__ += catch_warning(renamed_parameter, old_kwarg2=True)
-merged_parameter.__doc__ += catch_warning(merged_parameter, old_kwarg2=True)
-merged_parameter.__doc__ += catch_warning(merged_parameter, old_kwarg2=False, old_kwarg3=True)
+    document_warning(DeprecatedClass)
+    document_warning(deprecated_method)
+    document_warning(renamed_parameter, old_kwarg2=True)
+    document_warning(merged_parameter, old_kwarg2=True)
+    document_warning(merged_parameter, old_kwarg2=False, old_kwarg3=True)

@@ -1,40 +1,73 @@
-import setuptools
-from setuptools_scm import get_version
-from sphinx.setup_command import BuildDoc
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+from __future__ import absolute_import, print_function
 
-cmdclass = {'build_sphinx': BuildDoc}
+import io
+import re
+from glob import glob
+from os.path import basename, dirname, join, splitext
 
-with open("README.rst", "r") as fh:
-    long_description = fh.read()
+from setuptools import find_packages, setup
 
-project = "pyoneering"
-release = get_version(root='.', relative_to=__file__)
+
+def read(*names, **kwargs):
+    return io.open(
+        join(dirname(__file__), *names),
+        encoding=kwargs.get('encoding', 'utf8')
+    ).read()
+
+
+release = '0.1.0'
 version = '.'.join(release.split('.')[:2])
 
-setuptools.setup(
+project = 'pyoneering'
+setup(
     name=project,
     version=release,
-    author="Fabian Haase",
-    author_email="haase.fabian@gmail.com",
-    description="Decorators for deprecating and refactoring",
-    long_description=long_description,
-    long_description_content_type="text/x-rst",
-    url="https://github.com/pypa/sampleproject",
-    packages=setuptools.find_packages(exclude=['tests*']),
-    install_requires=['packaging'],
+    license='Apache Software License 2.0',
+    description='Decorators for deprecating and refactoring',
+    long_description='%s\n%s' % (
+        re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
+        re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
+    ),
+    author='Fabian Haase',
+    author_email='haase.fabian@gmail.com',
+    url='https://github.com/FHaase/python-pyoneering',
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
+    py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
+    include_package_data=True,
+    zip_safe=False,
     classifiers=[
-        "Development Status :: 4 - Beta",
-        "Intended Audience :: Developers",
-
-        "License :: OSI Approved :: Apache Software License",
-
-        "Programming Language :: Python :: 3",
-        "Operating System :: OS Independent",
+        # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Operating System :: Unix',
+        'Operating System :: POSIX',
+        'Operating System :: Microsoft :: Windows',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        # 'Programming Language :: Python :: Implementation :: CPython',
+        'Programming Language :: Python :: Implementation :: PyPy',
+        # uncomment if you test on these interpreters:
+        # 'Programming Language :: Python :: Implementation :: IronPython',
+        # 'Programming Language :: Python :: Implementation :: Jython',
+        # 'Programming Language :: Python :: Implementation :: Stackless',
+        'Topic :: Utilities',
     ],
-    command_options={
-        'build_sphinx': {
-            'project': ('setup.py', project),
-            'version': ('setup.py', version),
-            'release': ('setup.py', release),
-            'source_dir': ('setup.py', 'docs')}},
+    keywords=[
+        # eg: 'keyword1', 'keyword2', 'keyword3',
+    ],
+    install_requires=['packaging'],
+    extras_require={
+        # eg:
+        #   'rst': ['docutils>=0.11'],
+        #   ':python_version=="2.6"': ['argparse'],
+    },
 )

@@ -1,7 +1,8 @@
 import pytest
+from packaging import version
 from pytest import raises
 
-from pyoneering.core import *
+from pyoneering.core import Stage, create_stage_information, generate_version_identifiers, validate_version_identifiers
 
 
 @pytest.mark.parametrize("stage_names, version_identifiers, expected_stages", [

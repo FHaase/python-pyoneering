@@ -1,9 +1,10 @@
 import functools
 import inspect
-import pytest
 import warnings
+
+import pytest
 from hypothesis import given
-from hypothesis.strategies import one_of, none, text
+from hypothesis.strategies import none, one_of, text
 from pytest import raises
 
 from pyoneering import DevUtils

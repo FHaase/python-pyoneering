@@ -2,10 +2,8 @@ import inspect
 import warnings
 from functools import wraps
 
-from pyoneering.core import *
+from pyoneering.core import Stage, validate_version_identifiers, version
 from pyoneering.presets import SPHINX
-
-__version__ = "0.1.0-dev"
 
 
 class DevUtils:
@@ -49,7 +47,7 @@ class DevUtils:
             docstring_message = ' '.join([docstring_message, preview_next_stage])
         return docstring_message, warning_message
 
-    def deprecated(self, *version_identifiers, details=''):
+    def deprecated(self, *version_identifiers, details=""):
         """Decorator to mark a class, function, staticmethod, classmethod or instancemethod as deprecated
 
         * Inserts information to the docstring describing the current (and next) deprecation stage.
