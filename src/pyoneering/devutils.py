@@ -39,6 +39,7 @@ class DevUtils:
         return None
 
     def _generate_messages(self, f, **deprecation):
+        deprecation['details'] = ' ' + deprecation['details'] if deprecation['details'] else ''
         warning_message = " :: ".join([f.__name__, self.generator['warning'](**deprecation)])
         docstring_message = self.generator['docstring'](**deprecation)
         preview_next_stage = self.generator['preview'](**deprecation)
@@ -47,7 +48,7 @@ class DevUtils:
             docstring_message = ' '.join([docstring_message, preview_next_stage])
         return docstring_message, warning_message
 
-    def deprecated(self, *version_identifiers, details=""):
+    def deprecated(self, *version_identifiers, details=None):
         """Decorator to mark a class, function, staticmethod, classmethod or instancemethod as deprecated
 
         * Inserts information to the docstring describing the current (and next) deprecation stage.
@@ -83,7 +84,7 @@ class DevUtils:
 
         return decorator
 
-    def refactored(self, *version_identifiers, parameter_map, details=""):
+    def refactored(self, *version_identifiers, parameter_map, details=None):
         """Decorator to mark keyword arguments as deprecated
 
         * Replaces old keywords with new ones.
@@ -118,7 +119,7 @@ class DevUtils:
             else:
                 raise TypeError("parameter_map needs to be a dict or a function")
 
-            f.__doc__ = "\n\n".join([f.__doc__, '\n'.join([docstring_message, '\n'.join(deprecated_params)])])
+            f.__doc__ = "\n\n".join([f.__doc__, '\n\n'.join([docstring_message, '\n'.join(deprecated_params)])])
 
             @wraps(f)
             def wrapper(*args, **kwargs):
