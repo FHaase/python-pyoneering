@@ -14,7 +14,7 @@ In order to provide a module-wide configuration for the decorators :func:`deprec
 Then these functions are accessible from anywhere in your module.
 
 .. literalinclude:: /../tests/example/example.py
-    :lines: 3
+    :lines: 4
 
 Examples
 ========
