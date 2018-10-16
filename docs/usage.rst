@@ -21,15 +21,13 @@ Examples
 
 The examples are generated with :attr:`__version__='1.0'`.
 
-.. py:currentmodule:: tests
-
 deprecated class
 ----------------
 
 .. literalinclude:: /../tests/example/example.py
     :pyobject: DeprecatedClass
 
-.. autoclass:: example.DeprecatedClass
+.. autoclass:: tests.example.DeprecatedClass
 
 deprecated method
 -----------------
@@ -37,7 +35,7 @@ deprecated method
 .. literalinclude:: /../tests/example/example.py
     :pyobject: deprecated_method
 
-.. automethod:: example.deprecated_method
+.. automethod:: tests.example.deprecated_method
 
 renamed parameter
 -----------------
@@ -45,7 +43,7 @@ renamed parameter
 .. literalinclude:: /../tests/example/example.py
     :pyobject: renamed_parameter
 
-.. automethod:: example.renamed_parameter
+.. automethod:: tests.example.renamed_parameter
 
 merged parameter
 ----------------
@@ -55,4 +53,4 @@ merged parameter
 .. literalinclude:: /../tests/example/example.py
     :pyobject: merged_parameter
 
-.. automethod:: example.merged_parameter
+.. automethod:: tests.example.merged_parameter

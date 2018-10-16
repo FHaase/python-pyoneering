@@ -2,49 +2,59 @@ language: python
 sudo: false
 cache: pip
 env:
-    global:
+  global:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
     - SEGFAULT_SIGNALS=all
-    matrix:
+  matrix:
     - TOXENV=check
     - TOXENV=docs
 matrix:
-    include:
+  include:
+    - python: '2.7'
+      env:
+        - TOXENV=py27-cover,report,coveralls,codecov
+    - python: '2.7'
+      env:
+        - TOXENV=py27-nocov
     - python: '3.4'
       env:
-      - TOXENV=3.4-cover,report,coveralls,codecov
+        - TOXENV=py34-cover,report,coveralls,codecov
     - python: '3.4'
       env:
-      - TOXENV=3.4-nocov
+        - TOXENV=py34-nocov
     - python: '3.5'
       env:
-      - TOXENV=3.5-cover,report,coveralls,codecov
+        - TOXENV=py35-cover,report,coveralls,codecov
     - python: '3.5'
       env:
-      - TOXENV=3.5-nocov
+        - TOXENV=py35-nocov
     - python: '3.6'
       env:
-      - TOXENV=3.6-cover,report,coveralls,codecov
+        - TOXENV=py36-cover,report,coveralls,codecov
     - python: '3.6'
       env:
-      - TOXENV=3.6-nocov
+        - TOXENV=py36-nocov
     - python: '3.7'
+      dist: xenial
+      sudo: required
       env:
-      - TOXENV=3.7-cover,report,coveralls,codecov
+        - TOXENV=py37-cover,report,coveralls,codecov
     - python: '3.7'
+      dist: xenial
+      sudo: required
       env:
-      - TOXENV=3.7-nocov
+        - TOXENV=py37-nocov
 before_install:
-- python --version
-- uname -a
-- lsb_release -a
+  - python --version
+  - uname -a
+  - lsb_release -a
 install:
-- pip install tox
-- virtualenv --version
-- easy_install --version
-- pip --version
-- tox --version
-- |
+  - pip install tox
+  - virtualenv --version
+  - easy_install --version
+  - pip --version
+  - tox --version
+  - |
     set -ex
     if [[ $TRAVIS_PYTHON_VERSION == 'pypy' ]]; then
         (cd $HOME
@@ -66,11 +76,11 @@ install:
     fi
     set +x
 script:
-- tox -v
+  - tox -v
 after_failure:
-- more .tox/log/* | cat
-- more .tox/*/log/* | cat
+  - more .tox/log/* | cat
+  - more .tox/*/log/* | cat
 notifications:
-    email:
-        on_success: never
-        on_failure: always
+  email:
+    on_success: never
+    on_failure: always
