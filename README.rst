@@ -34,9 +34,9 @@ Overview
     :alt: Requirements Status
     :target: https://requires.io/github/FHaase/python-pyoneering/requirements/?branch=master
 
-.. |coveralls| image:: https://coveralls.io/repos/FHaase/python-pyoneering/badge.svg?branch=master&service=github
+.. |coveralls| image:: https://coveralls.io/repos/github/FHaase/python-pyoneering/badge.svg?branch=master
     :alt: Coverage Status
-    :target: https://coveralls.io/r/FHaase/python-pyoneering
+    :target: https://coveralls.io/github/FHaase/python-pyoneering?branch=master
 
 .. |codecov| image:: https://codecov.io/github/FHaase/python-pyoneering/coverage.svg?branch=master
     :alt: Coverage Status

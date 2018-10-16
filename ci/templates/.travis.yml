@@ -5,11 +5,15 @@ env:
   global:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
     - SEGFAULT_SIGNALS=all
+    - TOX_SKIP_MISSING_INTERPRETERS=False
   matrix:
     - TOXENV=check
     - TOXENV=docs
+    - TOXENV=docs-linkcheck
 matrix:
-  include:
+    allow_failures:
+      - env: TOXENV=docs-linkcheck
+    include:
 {%- for env, config in tox_environments|dictsort %}{{ '' }}
     - python: '{{ env.split("-")[0] if env.startswith("pypy") else "{0[2]}.{0[3]}".format(env) }}'
 {% if env.startswith('py37') %}
