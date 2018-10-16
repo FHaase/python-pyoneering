@@ -11,9 +11,10 @@ env:
     - TOXENV=docs
     - TOXENV=docs-linkcheck
 matrix:
-    allow_failures:
-      - env: TOXENV=docs-linkcheck
-    include:
+  allow_failures:
+    - env: TOXENV=docs-linkcheck
+  fast_finish: true
+  include:
 {%- for env, config in tox_environments|dictsort %}{{ '' }}
     - python: '{{ env.split("-")[0] if env.startswith("pypy") else "{0[2]}.{0[3]}".format(env) }}'
 {% if env.startswith('py37') %}

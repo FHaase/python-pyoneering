@@ -26,13 +26,13 @@ Overview
     :alt: Requirements Status
     :target: https://requires.io/github/FHaase/python-pyoneering/requirements/?branch=master
 
-.. |codacy-grade| image:: https://api.codacy.com/project/badge/Grade/eb62084e3ff6444f9a7d0c4c17d4d117
-   :alt: Codacy Grade
-   :target: https://app.codacy.com/app/FHaase/python-pyoneering?utm_source=github.com&utm_medium=referral&utm_content=FHaase/python-pyoneering&utm_campaign=Badge_Grade_Settings
+.. |codacy-grade| image:: https://api.codacy.com/project/badge/Grade/d8a959f14be948bd9fdfbbaf7b01bd21
+   :alt: Codacy Badge
+   :target: https://www.codacy.com/app/FHaase/python-pyoneering?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=FHaase/python-pyoneering&amp;utm_campaign=Badge_Grade
 
-.. |codacy-coverage| image:: https://api.codacy.com/project/badge/Coverage/eb62084e3ff6444f9a7d0c4c17d4d117
+.. |codacy-coverage| image:: https://api.codacy.com/project/badge/Coverage/d8a959f14be948bd9fdfbbaf7b01bd21
    :alt: Codacy Covarage
-   :target: https://app.codacy.com/app/FHaase/python-pyoneering?utm_source=github.com&utm_medium=referral&utm_content=FHaase/python-pyoneering&utm_campaign=Badge_Grade_Settings
+   :target: https://www.codacy.com/app/FHaase/python-pyoneering?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=FHaase/python-pyoneering&amp;utm_campaign=Badge_Coverage
 
 .. |version| image:: https://img.shields.io/pypi/v/pyoneering.svg
     :alt: PyPI Package latest release

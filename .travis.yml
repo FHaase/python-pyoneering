@@ -11,9 +11,10 @@ env:
     - TOXENV=docs
     - TOXENV=docs-linkcheck
 matrix:
-    allow_failures:
-      - env: TOXENV=docs-linkcheck
-    include:
+  allow_failures:
+    - env: TOXENV=docs-linkcheck
+  fast_finish: true
+  include:
     - python: '3.4'
       env:
         - TOXENV=py34-cover,report,coverage
