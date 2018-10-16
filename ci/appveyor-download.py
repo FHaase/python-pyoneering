@@ -10,8 +10,9 @@ from __future__ import unicode_literals
 
 import argparse
 import os
-import requests
 import zipfile
+
+import requests
 
 
 def make_auth_headers():
