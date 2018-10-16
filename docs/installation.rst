@@ -10,14 +10,6 @@ Installation
 
 You can install pyoneering with |pip|_ or |pipenv|_.
 
-* |pip|_
-
-.. code-block:: console
-
-    $ pip install pyoneering
-
-* |pipenv|_
-
 .. code-block:: console
 
     $ pip install pyoneering

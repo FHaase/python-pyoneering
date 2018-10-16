@@ -21,7 +21,7 @@ matrix:
       sudo: required
 {% endif %}
       env:
-        - TOXENV={{ env }}{% if config.cover %},report,coveralls,codecov{% endif -%}
+        - TOXENV={{ env }}{% if config.cover %},report,coverage{% endif -%}
 {% endfor %}
 
 before_install:
