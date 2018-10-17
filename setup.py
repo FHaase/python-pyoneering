@@ -17,13 +17,9 @@ def read(*names, **kwargs):
     ).read()
 
 
-release = '0.1.0'
-version = '.'.join(release.split('.')[:2])
-
-project = 'pyoneering'
 setup(
-    name=project,
-    version=release,
+    name='pyoneering',
+    version='0.1.0',
     license='Apache Software License 2.0',
     description='Decorators for deprecating and refactoring',
     long_description='%s\n%s' % (
